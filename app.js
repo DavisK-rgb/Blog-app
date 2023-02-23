@@ -1,4 +1,7 @@
  const express = require('express');
+ const mysql = require('mysql');
+
+
 require('dotenv').config();
 
  
@@ -11,9 +14,17 @@ require('dotenv').config();
  app.use(express.json());
  app.use(express.urlencoded());
 
+// db connection
+ const db = mysql.createConnection({
+    host:process.env.HOST,
+    user:process.env.USER,
+    password:process.env.PASSWORD
+});
 
-
-
+db.connect((err)=>{
+    if (err) throw err;
+    console.log('connected');
+    });
 
 
 
