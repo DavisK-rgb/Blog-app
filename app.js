@@ -23,13 +23,21 @@ require('dotenv').config();
 
 db.connect((err)=>{
     if (err) throw err;
-    console.log('connected');
+    console.log('connected!');
     });
 
 
 
 app.get('/',(req,res)=>{
-    res.render('home');
+    db.query('select * from `blog-app`.articles',(err,results)=>{
+        if(err) throw err ;
+        console.log(results);
+
+        res.render('home',{results:results});
+
+
+    } );
+    
 
 });
 
