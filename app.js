@@ -26,7 +26,8 @@ db.connect((err)=>{
     console.log('connected!');
     });
 
-
+const signup_errors = [];
+const login_errors=[];
 
 app.get('/',(req,res)=>{
     db.query('select * from `blog-app`.articles',(err,results)=>{
@@ -58,10 +59,17 @@ app.get('/article/:id',(req,res)=>{
 });
 
 app.get('/login',(req,res)=>{
-res.render('login');
+res.render('login',{errors:login_errors});
 });
 
-app.post('/login',(req,res)=>{
+app.post('/login',(req,res,next)=>{
+    if (req.body.email===''||req.body.password===''){
+        login_errors.push({err:'please enter all credentials'});
+        res.redirect('/login');
+    }else{
+        next();
+    }
+},(req,res)=>{
     db.query('select * from `blog-app`.users where email = ?',[req.body.email],(err,result)=>{
         if(err) throw err;
         if (result[0].password === req.body.password){
@@ -79,12 +87,23 @@ app.post('/login',(req,res)=>{
 
 
 app.get('/signup',(req,res)=>{
-    res.render('signUp');
+    res.render('signUp',{errors:signup_errors});
 
 });
 
 
-app.post('/signup',(req,res)=>{
+app.post('/signup',(req,res,next)=>{
+if(req.body.fname===''|| req.body.lname===''||req.body.email===''||req.body.password===''){
+    signup_errors.push({err:'please fill all fields'});
+
+    res.redirect('/signup');
+}else{
+    next();
+}
+
+
+
+},(req,res)=>{
     db.query('insert into `blog-app`.users(fname,lname,email,password) values(?,?,?,?)',[req.body.fname,req.body.lname,req.body.email,req.body.password],(err,result)=>{
 if (err) throw err;
 console.log('user registered !');

@@ -11,6 +11,9 @@
 </head>
 <body class="container bg-dark-subtle">
   <h1 class="text-primary">Enter details and submit to signup</h1>
+  <%if(errors.length>0){%>
+    <p class="text-danger"><%=errors[0].err%></p>
+    <%}%>
     <form action="/signup" method='post' >
         <div class="form-group">
             
