@@ -9,12 +9,19 @@
 
     <title>Document</title>
 </head>
-<body class="container">
+<body class="container bg-dark-subtle">
     <%- include('navbar') %>
+
+    <div class="card mb-3 mx-auto" style="width: 90%; margin-top:1%;">
+           
+        <div class="card-body">
+          <h5 class="card-title"><%= data.title %></h5>
+          <p class="card-text"><%= data.article %></p>
+        
+        </div>
+       
+      </div>
    
-    <div>
-        <h1><%= data.title %></h1>
-        <p><%= data.article %></p>
-    </div>
+   
 </body>
 </html>

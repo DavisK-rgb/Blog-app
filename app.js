@@ -57,8 +57,29 @@ app.get('/article/:id',(req,res)=>{
 
 });
 
+app.get('/login',(req,res)=>{
+res.render('login');
+});
 
 
+
+
+
+app.get('/signup',(req,res)=>{
+    res.render('signUp');
+
+});
+
+app.post('/signup',(req,res)=>{
+    db.query('insert into `blog-app`.users(fname,lname,email,password) values(?,?,?,?)',[req.body.fname,req.body.lname,req.body.email,req.body.password],(err,result)=>{
+if (err) throw err;
+console.log('user registered !');
+res.redirect('/');
+
+
+    });
+
+});
 
 
 
