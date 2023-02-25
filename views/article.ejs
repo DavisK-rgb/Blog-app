@@ -10,9 +10,11 @@
     <title>Document</title>
 </head>
 <body class="container">
+    <%- include('navbar') %>
+   
     <div>
-        <h1>ARTICLE TITLE</h1>
-        <p>full article here</p>
+        <h1><%= data.title %></h1>
+        <p><%= data.article %></p>
     </div>
 </body>
 </html>

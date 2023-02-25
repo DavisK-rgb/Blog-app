@@ -43,6 +43,22 @@ app.get('/',(req,res)=>{
 
 
 
+app.get('/article/:id',(req,res)=>{
+    db.query('select * from `blog-app`.articles where article_id=?',[req.params.id],(err,results)=>{
+
+
+    if(err) throw err ;
+    
+    res.render('article',{data:results[0]});
+
+
+    } );
+
+
+});
+
+
+
 
 
 
