@@ -137,6 +137,8 @@ if(req.body.fname===''|| req.body.lname===''||req.body.email===''||req.body.pass
     db.query('insert into `blog-app`.users(fname,lname,email,password) values(?,?,?,?)',[req.body.fname,req.body.lname,req.body.email,req.body.password],(err,result)=>{
 if (err) throw err;
 console.log('user registered !');
+req.session.userid = result.insertId;
+req.session.name = req.body.lname;
 res.redirect('/');
 
 
