@@ -15,7 +15,7 @@
         <p class="text-danger"><%=errors[0].err%></p>
         <%}%>
     <div>
-    <form action="/login" method='post' class="mx-auto"  >
+    <form action=<%= `/login/${ flag }` %> method='post' class="mx-auto"  >
             <div class="form-group">
 
               <label for="email">Email</label>

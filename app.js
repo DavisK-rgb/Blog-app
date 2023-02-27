@@ -69,8 +69,19 @@ app.get('/article/:id',(req,res)=>{
 
 
     if(err) throw err ;
+    if(results[0].premium===1){
+        if(req.session.userid){
+            res.render('article',{data:results[0]});
+        }else{
+            res.redirect(`/login/${req.params.id}`);
+        }
+
+
+    }else{
+        res.render('article',{data:results[0]});
+    }
+   
     
-    res.render('article',{data:results[0]});
 
 
     } );
@@ -78,20 +89,26 @@ app.get('/article/:id',(req,res)=>{
 
 });
 
-app.get('/login',(req,res)=>{
-res.render('login',{errors:login_errors});
+app.get('/login/:id',(req,res)=>{
+res.render('login',{errors:login_errors,flag:req.params.id});
 });
 
-app.post('/login',(req,res,next)=>{
+//if id param below is 1 req is from nav bar else its from one of the articles
+app.post('/login/:id',(req,res,next)=>{
+
+    //input validation
     if (req.body.email===''||req.body.password===''){
         login_errors.push({err:'please enter all credentials'});
-        res.redirect('/login');
+        res.redirect(`/login/${req.params.id}`);
     }else{
         next();
     }
+
 },(req,res)=>{
     db.query('select * from `blog-app`.users where email = ?',[req.body.email],(err,result)=>{
         if(err) throw err;
+        
+        // authentication
         if (result[0].password === req.body.password){
             console.log('auth successful!');
 
@@ -101,13 +118,21 @@ app.post('/login',(req,res,next)=>{
 
 
 
+            
+            if(req.params.id == 1){
+                res.redirect('/');
 
+            }else{
+               
+                    res.redirect(`/article/${req.params.id}`);
+                
+            }
 
-            res.redirect('/');
+            
 
         }else{
             console.log('auth failed!');
-            res.redirect('/login');
+            res.redirect(`/login/${req.params.id}`);
         }
 
     });
