@@ -1,5 +1,6 @@
  const express = require('express');
  const mysql = require('mysql');
+ const sessions = require('express-session');
 
 
 require('dotenv').config();
@@ -13,6 +14,25 @@ require('dotenv').config();
  app.use(express.static('public'));
  app.use(express.json());
  app.use(express.urlencoded());
+
+ app.use(sessions({
+     secret:process.env.SECRET,
+     saveUninitialized:true,
+     resave:true
+ }));
+
+ app.use((req,res,next)=>{
+     if (req.session.userid){
+         res.locals.name = req.session.name;
+        res.locals.isLoggedin=true;
+        next();
+
+     }else{
+        res.locals.isLoggedin= false;
+         next();
+     }
+
+ });
 
 // db connection
  const db = mysql.createConnection({
@@ -74,7 +94,17 @@ app.post('/login',(req,res,next)=>{
         if(err) throw err;
         if (result[0].password === req.body.password){
             console.log('auth successful!');
+
+            req.session.userid = result[0].id;
+
+            req.session.name = result[0].lname;
+
+
+
+
+
             res.redirect('/');
+
         }else{
             console.log('auth failed!');
             res.redirect('/login');
