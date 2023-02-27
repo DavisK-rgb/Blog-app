@@ -9,9 +9,14 @@
     </button>
     <div class="collapse navbar-collapse  justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav   ">
-        
-        <a class="nav-item nav-link " href="/signup">Sign up</a>
-        <a class="nav-item nav-link " href="/login">Login</a>
+        <% if(isLoggedin){%>
+          <a class="nav-item nav-link " href="/logout">Logout</a>
+          <%}else{%>
+            <a class="nav-item nav-link " href="/signup">Sign up</a>
+            <a class="nav-item nav-link " href="/login">Login</a>
+           
+
+            <%}%>
        
       </div>
     </div>
