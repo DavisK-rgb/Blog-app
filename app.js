@@ -107,33 +107,38 @@ app.post('/login/:id',(req,res,next)=>{
 },(req,res)=>{
     db.query('select * from `blog-app`.users where email = ?',[req.body.email],(err,result)=>{
         if(err) throw err;
-        
-        // authentication
-        if (result[0].password === req.body.password){
-            console.log('auth successful!');
-
-            req.session.userid = result[0].id;
-
-            req.session.name = result[0].lname;
-
-
-
-            
-            if(req.params.id == 1){
-                res.redirect('/');
-
-            }else{
-               
-                    res.redirect(`/article/${req.params.id}`);
+        if(result[0]===undefined){
+            res.redirect('/signup');
+        }else{
+            if (result[0].password === req.body.password){
+                console.log('auth successful!');
+    
+                req.session.userid = result[0].id;
+    
+                req.session.name = result[0].lname;
+    
+    
+    
                 
+                if(req.params.id == 1){
+                    res.redirect('/');
+    
+                }else{
+                   
+                        res.redirect(`/article/${req.params.id}`);
+                    
+                }
+    
+                
+    
+            }else{
+                console.log('auth failed!');
+                res.redirect(`/login/${req.params.id}`);
             }
 
-            
-
-        }else{
-            console.log('auth failed!');
-            res.redirect(`/login/${req.params.id}`);
         }
+        // authentication
+       
 
     });
 
